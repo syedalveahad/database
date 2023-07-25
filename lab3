@@ -1,0 +1,41 @@
+Lab_3
+Select,project,union
+
+CREATE DATABASE lab_3;
+use lab_3;
+CREATE TABLE AAA(
+Roll int,
+Name varchar(100),
+Address varchar(100));
+INSERT INTO aaa( Roll, Name, Address )
+VALUES(225,'Sultana','Dhaka');
+INSERT INTO aaa( Roll, Name, Address )
+VALUES(202,'mishu','Dinajpur');
+INSERT INTO aaa( Roll, Name, Address )
+VALUES(202,'mishu','Dinaspur');
+INSERT INTO aaa( Roll, Name, Address )
+VALUES(210,'sajib','chattagong');
+SELECT*FROM aaa;
+ 
+Select
+SELECT * FROM aaa WHERE Roll=225;
+ 
+project
+SELECT Name FROM aaa;
+
+ 
+CREATE TABLE bbb( Roll int,
+                 Name varchar(100),
+                 Address varchar(100));
+INSERT INTO bbb( Roll, Name, Address ) 
+VALUES(182,'era','lalmonirhat');
+INSERT INTO bbb( Roll, Name, Address ) 
+VALUES(207,'maruf','Dhaka');
+INSERT INTO bbb( Roll, Name, Address ) 
+VALUES(225,'sultana','Dhaka');
+INSERT INTO bbb( Roll, Name, Address ) 
+VALUES(192,'alvi','comilla');
+Union
+SELECT Roll FROM aaa 
+UNION
+SELECT Roll FROM bbb;
