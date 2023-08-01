@@ -63,9 +63,8 @@ WHERE grade=0;
 FROM order_table
 WHERE C_ID=111;
 
-8. SELECT *
-FROM customer_table
-WHERE C_Name LIKE %a%;
+8. SELECT * FROM customer_table
+WHERE C_Name LIKE '%a%';
 
 9. SELECT *
 FROM customer_table
