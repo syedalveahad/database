@@ -31,3 +31,9 @@ FROM customer;
 
 SELECT Sum(Discount)
 FROM customer;
+
+
+SELECT COUNT(Discount), Name
+FROM customer
+GROUP BY Name
+HAVING COUNT(Discount) > 30;
