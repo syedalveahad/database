@@ -53,61 +53,134 @@ int main() {
     return 0;
 }
 
-problem - 3:
+problem - 2:
 ------------
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
+struct Edge {
+    int src, dest, weight;
+};
 
-void floydWarshall(vector<vector<int>>& graph) {
-    int V = graph.size();
+class Graph {
+    int V, E;
+    vector<Edge> edges;
 
-    int INT_MAX;
-    vector<vector<int>> dist(V, vector<int>(V, INT_MAX));
-
-    for (int i = 0; i < V; i++) {
-        for (int j = 0; j < V; j++) {
-            if (i == j) {
-                dist[i][j] = 0;
-            } else if (graph[i][j] != 0) {
-                dist[i][j] = graph[i][j];
-            }
-        }
+public:
+    Graph(int vertices, int edgesCount) : V(vertices), E(edgesCount) {
+        edges.resize(E);
     }
 
+    void addEdge(int src, int dest, int weight) {
+        edges.push_back({src, dest, weight});
+    }
 
+    void bellmanFord(int source) {
+        vector<int> distances(V, INT_MAX);
+        distances[source] = 0;
+
+        for (int i = 0; i < V - 1; i++) {
+            for (const Edge& edge : edges) {
+                int u = edge.src;
+                int v = edge.dest;
+                int w = edge.weight;
+
+                if (distances[u] != INT_MAX && distances[u] + w < distances[v]) {
+                    distances[v] = distances[u] + w;
+                }
+            }
+        }
+
+        // Check for negative cycles
+        for (const Edge& edge : edges) {
+            int u = edge.src;
+            int v = edge.dest;
+            int w = edge.weight;
+
+            if (distances[u] != INT_MAX && distances[u] + w < distances[v]) {
+                cout << "Graph contains a negative cycle" << endl;
+                return;
+            }
+        }
+
+        // Print shortest distances
+        for (int i = 0; i < V; i++) {
+            cout << "Shortest distance from source to " << i << " is " << distances[i] << endl;
+        }
+    }
+};
+
+int main() {
+    int V, E;
+    cout << "Enter the number of vertices and edges: ";
+    cin >> V >> E;
+
+    Graph graph(V, E);
+
+    cout << "Enter edges (source, destination, weight):" << endl;
+    for (int i = 0; i < E; i++) {
+        int src, dest, weight;
+        cin >> src >> dest >> weight;
+        graph.addEdge(src, dest, weight);
+    }
+
+    int source;
+    cout << "Enter the source vertex: ";
+    cin >> source;
+
+    graph.bellmanFord(source);
+
+    return 0;
+}
+
+problem -3:
+-----------
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define V 4
+#define INF 99999
+
+void printSolution(int dist[][V]);
+void floydWarshall(int dist[][V])
+{
     for (int k = 0; k < V; k++) {
         for (int i = 0; i < V; i++) {
             for (int j = 0; j < V; j++) {
-                if (dist[i][k] != INT_MAX && dist[k][j] != INT_MAX) {
-                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                if (dist[i][k] != INF && dist[k][j] != INF && (dist[i][j] > dist[i][k] + dist[k][j])) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
                 }
             }
         }
     }
 
+    printSolution(dist);
+}
 
+void printSolution(int dist[][V])
+{
+    cout << "The following matrix shows the shortest distances between every pair of vertices\n";
     for (int i = 0; i < V; i++) {
         for (int j = 0; j < V; j++) {
-            cout << "Shortest path from " << i << " to " << j << ": " << dist[i][j] << endl;
+            if (dist[i][j] == INF)
+                cout << "INF ";
+            else
+                cout << dist[i][j] << " ";
         }
+        cout << endl;
     }
 }
 
-int main() {
-
-    vector<vector<int>> graph = {
-        {0, 3, 0, 0, 0, 0},
-        {0, 0, 8, 0, 0, 2},
-        {0, 0, 0, 0, 0, 0},
-        {0, 5, 10, 0, 0, 0},
-        {0, 0, 2, 1, 0, 0},
-        {0, 0, 0, 7, 4, 0}
-    };
+int main()
+{
+    int graph[V][V] = { {0, 3, INF, 7},
+                       {8, 0, 2, INF},
+                       {5, INF, 0, 1},
+                       {2, INF, INF, 0} };
 
     floydWarshall(graph);
-
     return 0;
 }
-
